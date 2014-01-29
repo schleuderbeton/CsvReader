@@ -44,6 +44,9 @@ public class App {
 
             LOG.log(Level.OFF, "---OUT---------------------");
             for (Object record : messageOut) {
+                if(record instanceof Customer){
+                    LOG.log(Level.OFF, "----------------------------------------CSV->"+((Customer) record).toCsvString());
+                }
                 LOG.info(record.toString());
             }
             LOG.log(Level.OFF, "---------------------------");
