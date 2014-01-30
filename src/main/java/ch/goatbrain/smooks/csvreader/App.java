@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang.StringUtils;
 import org.milyn.Smooks;
 import org.milyn.SmooksException;
 import org.milyn.container.ExecutionContext;
@@ -34,33 +35,74 @@ public class App {
 
     public static void main(String[] args) {
         LOG.info("CSVReader test ...");
-
-        String messageIn = readInputMessage();
-        LOG.log(Level.OFF, "---IN----------------------");
-        LOG.log(Level.OFF, messageIn);
-        LOG.log(Level.OFF, "---------------------------");
         try {
-            List messageOut = runSmooksTransform(messageIn);
+            //basicCsvValidation("3157_General_20140121_small.csv");
+            basicCsvValidation("3157_General_20140121.csv");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-            LOG.log(Level.OFF, "---OUT---------------------");
-            for (Object record : messageOut) {
-                if(record instanceof Customer){
-                    LOG.log(Level.OFF, "----------------------------------------CSV->"+((Customer) record).toCsvString());
-                }
-                LOG.info(record.toString());
+
+
+    }
+
+    private static void basicCsvValidation(String csvFile) throws FileNotFoundException {
+
+        List<String> lines = readFileUsingScanner(csvFile);
+
+        int lineCounter = 1, nofFields = 1, invalidRecords = 0;
+        for (String line : lines) {
+            nofFields = StringUtils.countMatches(line, "|");
+            if (CustomerGeneralData.getNofFields() != nofFields) {
+                LOG.log(Level.SEVERE, "Line " + String.valueOf(lineCounter) + " - " + nofFields + " fields -> expected=" + CustomerGeneralData.getNofFields());
+                //LOG.log(Level.SEVERE, line);
+                invalidRecords++;
             }
-            LOG.log(Level.OFF, "---------------------------");
+            lineCounter++;
+            nofFields = 1;
+        }
 
-        } catch (IOException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SAXException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SmooksException ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        LOG.log(Level.INFO, "#############################################################");
+        LOG.log(Level.INFO, "Total records:\t\t\t".concat(String.valueOf(lines.size())).concat(" lines"));
+        LOG.log(Level.INFO, "Total invalid records:\t\t".concat(String.valueOf(invalidRecords)).concat(" lines"));
+        LOG.log(Level.INFO, "Total valid records:\t\t".concat(String.valueOf(lines.size() - invalidRecords)).concat(" lines"));
+
+
+
+//        String messageIn = readInputMessage(csvFile);
+//
+//
+//
+//
+//        int count = StringUtils.countMatches(messageIn, "|");
+//        int count2 = StringUtils.countMatches(messageIn, "\n");
+//
+//        LOG.log(Level.OFF, "====nof lines=" + String.valueOf(count2));
+//        LOG.log(Level.OFF, "====nof fields=" + String.valueOf(count) + 1);
+
+        //mapCustomerGeneralDataCsv2Java(messageIn);
+    }
+
+    private static List<CustomerGeneralData> runSmooksTransformCustomerGeneral(String messageIn) throws IOException, SAXException, SmooksException {
+        Smooks smooks = new Smooks();
+        try {
+            CSVRecordParserConfigurator csvrpc = new CSVRecordParserConfigurator(CustomerGeneralData.getCsvFields());
+            csvrpc.setSeparatorChar('|');
+            Binding binding = new Binding("customerGeneralList", CustomerGeneralData.class, BindingType.LIST);
+            smooks.setReaderConfig(csvrpc.setBinding(binding));
+            // Configure the execution context to generate a report...
+            ExecutionContext executionContext = smooks.createExecutionContext();
+            executionContext.setEventListener(new HtmlReportGenerator("target/report/report.html"));
+
+            JavaResult javaResult = new JavaResult();
+            smooks.filterSource(executionContext, new StringSource(messageIn), javaResult);
+            return (List<CustomerGeneralData>) javaResult.getBean("customerGeneralList");
+        } finally {
+            smooks.close();
         }
     }
 
-    private static List runSmooksTransform(String messageIn) throws IOException, SAXException, SmooksException {
+    private static List runSmooksTransformCustomer(String messageIn) throws IOException, SAXException, SmooksException {
         Smooks smooks = new Smooks();
         try {
             CSVRecordParserConfigurator csvrpc = new CSVRecordParserConfigurator("firstName,lastName,city");
@@ -80,22 +122,23 @@ public class App {
         }
     }
 
-    private static String readInputMessage() {
+    private static String readInputMessage(String file) {
         try {
-            return StreamUtils.readStreamAsString(new FileInputStream("wambo.csv"));
+            return StreamUtils.readStreamAsString(new FileInputStream(file));
         } catch (IOException e) {
             e.printStackTrace();
             return "<no-message/>";
         }
     }
 
-    public static void readFileUsingScanner(String filename) throws FileNotFoundException {
-        List<Integer> integers = new ArrayList<Integer>();
+    public static List<String> readFileUsingScanner(String filename) throws FileNotFoundException {
+        List<String> lines = new ArrayList<String>();
         Scanner fileScanner = null;
         fileScanner = new Scanner(new File(filename));
-        while (fileScanner.hasNextInt()) {
-            integers.add(fileScanner.nextInt());
+        while (fileScanner.hasNextLine()) {
+            lines.add(fileScanner.nextLine());
         }
+        return lines;
     }
 
     public static List<String> readFileUsingGuava(String filename) throws IOException {
@@ -109,4 +152,54 @@ public class App {
         return list;
     }
 
+    private static void simlpeTest() {
+        String messageIn = readInputMessage("wambo.csv");
+        LOG.log(Level.OFF, "---IN----------------------");
+        LOG.log(Level.OFF, messageIn);
+        LOG.log(Level.OFF, "---------------------------");
+        try {
+            List messageOut = runSmooksTransformCustomer(messageIn);
+
+            LOG.log(Level.OFF, "---OUT---------------------");
+            for (Object record : messageOut) {
+                if (record instanceof Customer) {
+                    LOG.log(Level.OFF, "----------------------------------------CSV->" + ((Customer) record).toCsvString());
+                }
+                LOG.info(record.toString());
+            }
+            LOG.log(Level.OFF, "---------------------------");
+
+        } catch (IOException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SmooksException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void mapCustomerGeneralDataCsv2Java(String messageIn) {
+        LOG.log(Level.OFF, "---IN----------------------");
+        LOG.log(Level.OFF, messageIn);
+        LOG.log(Level.OFF, "---------------------------");
+
+        try {
+            List<CustomerGeneralData> messageOut = runSmooksTransformCustomerGeneral(messageIn);
+
+            LOG.log(Level.OFF, "---OUT---------------------");
+            int i = 0;
+            for (CustomerGeneralData customerGeneralData : messageOut) {
+                i++;
+            }
+            LOG.log(Level.OFF, "======> " + i + "records");
+            LOG.log(Level.OFF, "---------------------------");
+
+        } catch (IOException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SmooksException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
