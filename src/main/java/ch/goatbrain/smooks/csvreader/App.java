@@ -53,8 +53,8 @@ public class App {
         int lineCounter = 1, nofFields = 1, invalidRecords = 0;
         for (String line : lines) {
             nofFields = StringUtils.countMatches(line, "|");
-            if (CustomerGeneralData.getNofFields() != nofFields) {
-                LOG.log(Level.SEVERE, "Line " + String.valueOf(lineCounter) + " - " + nofFields + " fields -> expected=" + CustomerGeneralData.getNofFields());
+            if (CustomerGeneral.getNofFields() != nofFields) {
+                LOG.log(Level.SEVERE, "Line " + String.valueOf(lineCounter) + " - " + nofFields + " fields -> expected=" + CustomerGeneral.getNofFields());
                 //LOG.log(Level.SEVERE, line);
                 invalidRecords++;
             }
@@ -83,12 +83,12 @@ public class App {
         //mapCustomerGeneralDataCsv2Java(messageIn);
     }
 
-    private static List<CustomerGeneralData> runSmooksTransformCustomerGeneral(String messageIn) throws IOException, SAXException, SmooksException {
+    private static List<CustomerGeneral> runSmooksTransformCustomerGeneral(String messageIn) throws IOException, SAXException, SmooksException {
         Smooks smooks = new Smooks();
         try {
-            CSVRecordParserConfigurator csvrpc = new CSVRecordParserConfigurator(CustomerGeneralData.getCsvFields());
+            CSVRecordParserConfigurator csvrpc = new CSVRecordParserConfigurator(CustomerGeneral.getCsvFields());
             csvrpc.setSeparatorChar('|');
-            Binding binding = new Binding("customerGeneralList", CustomerGeneralData.class, BindingType.LIST);
+            Binding binding = new Binding("customerGeneralList", CustomerGeneral.class, BindingType.LIST);
             smooks.setReaderConfig(csvrpc.setBinding(binding));
             // Configure the execution context to generate a report...
             ExecutionContext executionContext = smooks.createExecutionContext();
@@ -96,7 +96,7 @@ public class App {
 
             JavaResult javaResult = new JavaResult();
             smooks.filterSource(executionContext, new StringSource(messageIn), javaResult);
-            return (List<CustomerGeneralData>) javaResult.getBean("customerGeneralList");
+            return (List<CustomerGeneral>) javaResult.getBean("customerGeneralList");
         } finally {
             smooks.close();
         }
@@ -184,11 +184,11 @@ public class App {
         LOG.log(Level.OFF, "---------------------------");
 
         try {
-            List<CustomerGeneralData> messageOut = runSmooksTransformCustomerGeneral(messageIn);
+            List<CustomerGeneral> messageOut = runSmooksTransformCustomerGeneral(messageIn);
 
             LOG.log(Level.OFF, "---OUT---------------------");
             int i = 0;
-            for (CustomerGeneralData customerGeneralData : messageOut) {
+            for (CustomerGeneral customerGeneralData : messageOut) {
                 i++;
             }
             LOG.log(Level.OFF, "======> " + i + "records");

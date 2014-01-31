@@ -3,6 +3,8 @@
  */
 package ch.goatbrain.smooks.csvreader;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * TODO
  *
@@ -19,4 +21,25 @@ package ch.goatbrain.smooks.csvreader;
 public abstract class AbstractCsvDataClass {
 
     protected static char separatorChar = '|';
+    private static String csvFields;
+
+    public static char getSeparatorChar() {
+        return separatorChar;
+    }
+
+    public static void setSeparatorChar(char separatorChar) {
+        AbstractCsvDataClass.separatorChar = separatorChar;
+    }
+
+    public static String getCsvFields() {
+        return csvFields;
+    }
+
+    public static void setCsvFields(String csvFields) {
+        AbstractCsvDataClass.csvFields = csvFields;
+    }
+
+    public static int getNofFields() {
+        return StringUtils.countMatches(csvFields, String.valueOf(",")) + 1;
+    }
 }
