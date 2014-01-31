@@ -20,26 +20,26 @@ import org.apache.commons.lang.StringUtils;
  */
 public abstract class AbstractCsvDataClass {
 
-    protected static char separatorChar = '|';
-    private static String csvFields;
+    protected char separatorChar = '|';
+    protected String csvFields;
 
-    public static char getSeparatorChar() {
+    public char getSeparatorChar() {
         return separatorChar;
     }
 
-    public static void setSeparatorChar(char separatorChar) {
-        AbstractCsvDataClass.separatorChar = separatorChar;
+    public void setSeparatorChar(char separatorChar) {
+        this.separatorChar = separatorChar;
     }
 
-    public static String getCsvFields() {
+    public String getCsvFields() {
         return csvFields;
     }
 
-    public static void setCsvFields(String csvFields) {
-        AbstractCsvDataClass.csvFields = csvFields;
+    public void setCsvFields(String csvFields) {
+        this.csvFields = csvFields;
     }
 
-    public static int getNofFields() {
+    public int getNofFields() {
         return StringUtils.countMatches(csvFields, String.valueOf(",")) + 1;
     }
 }

@@ -3,8 +3,6 @@
  */
 package ch.goatbrain.smooks.csvreader;
 
-import static ch.goatbrain.smooks.csvreader.AbstractCsvDataClass.separatorChar;
-
 /**
  * TODO
  *
