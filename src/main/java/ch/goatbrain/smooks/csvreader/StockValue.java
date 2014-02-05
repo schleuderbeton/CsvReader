@@ -102,4 +102,19 @@ public class StockValue extends AbstractCsvDataClass {
     public String toString() {
         return "StockValue{" + "article=" + article + ", warehouse=" + warehouse + ", stock=" + stock + ", stockUnit=" + stockUnit + ", stockType=" + stockType + ", gld=" + gld + ", priceUnit=" + priceUnit + ", currency=" + currency + '}';
     }
+
+    protected boolean mandatoryFieldsAvailable(boolean recordIsValid) {
+        if (fieldHasContent(
+                article, "article")
+                && fieldHasContent(warehouse, "warehouse")
+                && fieldHasContent(stock, "stock")
+                && fieldHasContent(stockUnit, "stockUnit")
+                && fieldHasContent(stockType, "stockType")
+                && fieldHasContent(gld, "gld")
+                && fieldHasContent(priceUnit, "priceUnit")
+                && fieldHasContent(currency, "currency")) {
+            recordIsValid = true;
+        }
+        return recordIsValid;
+    }
 }

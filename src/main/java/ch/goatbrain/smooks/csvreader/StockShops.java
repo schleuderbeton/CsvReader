@@ -66,4 +66,14 @@ public class StockShops extends AbstractCsvDataClass {
     public String toString() {
         return "StockShops{" + "materialNumber=" + materialNumber + ", warehouse=" + warehouse + ", stock=" + stock + ", location=" + location + '}';
     }
+
+    protected boolean mandatoryFieldsAvailable(boolean recordIsValid) {
+        if (fieldHasContent(
+                materialNumber, "materialNumber")
+                && fieldHasContent(stock, "stock")
+                && fieldHasContent(warehouse, "warehouse")) {
+            recordIsValid = true;
+        }
+        return recordIsValid;
+    }
 }

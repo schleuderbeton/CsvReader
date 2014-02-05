@@ -75,4 +75,15 @@ public class Consumption extends AbstractCsvDataClass {
     public String toString() {
         return "Consumption{" + "productNumber=" + productNumber + ", year=" + year + ", month=" + month + ", demand=" + demand + ", picks=" + picks + '}';
     }
+
+    protected boolean mandatoryFieldsAvailable(boolean recordIsValid) {
+        if (fieldHasContent(
+                productNumber, "productNumber")
+                && fieldHasContent(year, "year")
+                && fieldHasContent(month, "month")
+                && fieldHasContent(demand, "demand")) {
+            recordIsValid = true;
+        }
+        return recordIsValid;
+    }
 }

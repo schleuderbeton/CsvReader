@@ -75,4 +75,15 @@ public class Gld extends AbstractCsvDataClass {
     public String toString() {
         return "Gld{" + "article=" + article + ", warehouse=" + warehouse + ", gld=" + gld + ", priceUnit=" + priceUnit + ", currency=" + currency + '}';
     }
+
+    protected boolean mandatoryFieldsAvailable(boolean recordIsValid) {
+        if (fieldHasContent(
+                article, "article")
+                && fieldHasContent(warehouse, "warehouse")
+                && fieldHasContent(gld, "gld")
+                && fieldHasContent(priceUnit, "priceUnit")) {
+            recordIsValid = true;
+        }
+        return recordIsValid;
+    }
 }

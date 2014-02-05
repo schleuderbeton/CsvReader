@@ -220,25 +220,16 @@ public class CustomerSknvk extends AbstractCsvDataClass {
         return "CustomerSknvk{" + "kunnr=" + kunnr + ", abtnr=" + abtnr + ", parla=" + parla + ", wue_zzanre=" + wue_zzanre + ", namev=" + namev + ", knvk_name1=" + knvk_name1 + ", pakn5=" + pakn5 + ", pafkt=" + pafkt + ", knvk_telf1=" + knvk_telf1 + ", wue_zzteltxe=" + wue_zzteltxe + ", wue_zztelfx=" + wue_zztelfx + ", knvk_zzemail=" + knvk_zzemail + ", parau=" + parau + ", wue_zzgbdat=" + wue_zzgbdat + ", titel_ap=" + titel_ap + ", knvk_sortl=" + knvk_sortl + ", parh1=" + parh1 + ", parh2=" + parh2 + ", parh3=" + parh3 + ", parh4=" + parh4 + ", parh5=" + parh5 + '}';
     }
 
-    public boolean isValid() {
-        boolean recordIsValid = false;
-        recordIsValid = mandatoryFieldsAvailable(recordIsValid);
-        return recordIsValid;
-    }
-
-    private boolean mandatoryFieldsAvailable(boolean recordIsValid) {
-        if (fieldHasContent(kunnr) && fieldHasContent(abtnr) && fieldHasContent(parla) && fieldHasContent(wue_zzanre)
-                && fieldHasContent(knvk_name1) && fieldHasContent(pakn5) && fieldHasContent(pafkt)) {
+    protected boolean mandatoryFieldsAvailable(boolean recordIsValid) {
+        if (fieldHasContent(kunnr, "kunnr")
+                && fieldHasContent(abtnr, "abtnr")
+                && fieldHasContent(parla, "parla")
+                && fieldHasContent(wue_zzanre, "wue_zzanre")
+                && fieldHasContent(knvk_name1, "knvk_name1")
+                && fieldHasContent(pakn5, "pakn5")
+                && fieldHasContent(pafkt, "pafkt")) {
             recordIsValid = true;
         }
         return recordIsValid;
-    }
-
-    protected boolean fieldHasContent(String fieldContent) {
-        boolean fieldHasContent = false;
-        if (fieldContent != null && fieldContent.length() > 0) {
-            fieldHasContent = true;
-        }
-        return fieldHasContent;
     }
 }

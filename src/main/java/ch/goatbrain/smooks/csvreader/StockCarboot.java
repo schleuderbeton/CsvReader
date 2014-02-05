@@ -16,9 +16,9 @@ package ch.goatbrain.smooks.csvreader;
  * @$LastChangedDate$
  * @$Id$
  */
-public class StocksCarboot extends AbstractCsvDataClass {
+public class StockCarboot extends AbstractCsvDataClass {
 
-    public StocksCarboot() {
+    public StockCarboot() {
         setCsvFields("materialnumber,warehouse,stock,saleRepNr,fach");
     }
     private String materialnumber;
@@ -74,5 +74,16 @@ public class StocksCarboot extends AbstractCsvDataClass {
     @Override
     public String toString() {
         return "StocksCarboot{" + "materialnumber=" + materialnumber + ", warehouse=" + warehouse + ", stock=" + stock + ", saleRepNr=" + saleRepNr + ", fach=" + fach + '}';
+    }
+
+    protected boolean mandatoryFieldsAvailable(boolean recordIsValid) {
+        if (fieldHasContent(
+                materialnumber, "materialNumber")
+                && fieldHasContent(warehouse, "warehouse")
+                && fieldHasContent(stock, "stock")
+                && fieldHasContent(saleRepNr, "saleRepNr")) {
+            recordIsValid = true;
+        }
+        return recordIsValid;
     }
 }

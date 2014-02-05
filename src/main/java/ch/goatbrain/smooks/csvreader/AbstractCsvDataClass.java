@@ -3,6 +3,8 @@
  */
 package ch.goatbrain.smooks.csvreader;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -20,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public abstract class AbstractCsvDataClass {
 
+    private static final Logger LOG = Logger.getLogger(AbstractCsvDataClass.class.getName());
     protected char separatorChar = '|';
     protected String csvFields;
 
@@ -41,5 +44,27 @@ public abstract class AbstractCsvDataClass {
 
     public int getNofFields() {
         return StringUtils.countMatches(csvFields, String.valueOf(",")) + 1;
+    }
+
+    protected abstract boolean mandatoryFieldsAvailable(boolean recordIsValid);
+
+    public boolean isValid() {
+        boolean recordIsValid = false;
+        recordIsValid = mandatoryFieldsAvailable(recordIsValid);
+        return recordIsValid;
+    }
+
+    protected boolean fieldHasContent(String fieldContent) {
+        return fieldHasContent(fieldContent, "");
+    }
+
+    protected boolean fieldHasContent(String fieldContent, String fieldName) {
+        boolean fieldHasContent = false;
+        if (fieldContent != null && fieldContent.length() > 0) {
+            fieldHasContent = true;
+        } else {
+            LOG.log(Level.OFF, "Mandatory Field " + fieldName + " has NO content!");
+        }
+        return fieldHasContent;
     }
 }

@@ -1209,4 +1209,36 @@ public class CustomerGeneral extends AbstractCsvDataClass {
     public String toString() {
         return "CustomerGeneral{" + "kunnr=" + kunnr + ", aufsd=" + aufsd + ", anred=" + anred + ", brsch=" + brsch + ", ktokd=" + ktokd + ", wue_zzktost=" + wue_zzktost + ", land1=" + land1 + ", loevm=" + loevm + ", name1=" + name1 + ", name2=" + name2 + ", name3=" + name3 + ", name4=" + name4 + ", lifsd=" + lifsd + ", ort1=" + ort1 + ", ort2=" + ort2 + ", pfach=" + pfach + ", pstlz=" + pstlz + ", pstl2=" + pstl2 + ", sortl=" + sortl + ", spras=" + spras + ", stras=" + stras + ", telf1=" + telf1 + ", telf2=" + telf2 + ", telfx=" + telfx + ", katr5=" + katr5 + ", katr7=" + katr7 + ", pfort=" + pfort + ", vbund=" + vbund + ", zzaort=" + zzaort + ", zzstat=" + zzstat + ", zzemail=" + zzemail + ", wue_zzbukrs=" + wue_zzbukrs + ", wue_zzvknum=" + wue_zzvknum + ", zzloegr=" + zzloegr + ", katr2=" + katr2 + ", stceg=" + stceg + ", stcd1=" + stcd1 + ", stcd2=" + stcd2 + ", region=" + region + ", jmzah=" + jmzah + ", stkzn=" + stkzn + ", stcd3=" + stcd3 + ", stcd4=" + stcd4 + ", stkza=" + stkza + ", katr8=" + katr8 + ", erdat=" + erdat + ", katr6=" + katr6 + ", telbx=" + telbx + ", stcd5=" + stcd5 + ", knurl=" + knurl + ", stkzu=" + stkzu + ", stcdt=" + stcdt + ", lifnr=" + lifnr + ", bahne=" + bahne + ", locco=" + locco + ", bahns=" + bahns + ", gform=" + gform + ", taxfreedecl=" + taxfreedecl + ", shiptoparty_key=" + shiptoparty_key + ", parvw=" + parvw + ", depfa=" + depfa + ", akont=" + akont + ", knrze=" + knrze + ", zahls=" + zahls + ", knb1_zterm=" + knb1_zterm + ", zwels=" + zwels + ", kverm=" + kverm + ", altkn=" + altkn + ", zinrt=" + zinrt + ", vzskz=" + vzskz + ", zuawa=" + zuawa + ", xausz=" + xausz + ", togru=" + togru + ", mahna=" + mahna + ", busab=" + busab + ", mansp=" + mansp + ", kkber=" + kkber + ", klimk=" + klimk + ", knkli=" + knkli + ", wue_zzkred=" + wue_zzkred + ", ctlpc=" + ctlpc + ", spart=" + spart + ", autlf=" + autlf + ", kztlf=" + kztlf + ", antlf=" + antlf + ", kzazu=" + kzazu + ", lprio=" + lprio + ", vsbed=" + vsbed + ", mrnkz=" + mrnkz + ", perfk=" + perfk + ", zterm=" + zterm + ", kvgr1=" + kvgr1 + ", kvgr2=" + kvgr2 + ", kvgr3=" + kvgr3 + ", kvgr4=" + kvgr4 + ", kvgr5=" + kvgr5 + ", wue_zzxeinzel=" + wue_zzxeinzel + ", wue_zzklkz=" + wue_zzklkz + ", wue_zzomkz=" + wue_zzomkz + ", wue_zzakl7=" + wue_zzakl7 + ", wue_zzakl12=" + wue_zzakl12 + ", wue_zzakl17=" + wue_zzakl17 + ", wue_zzakl18=" + wue_zzakl18 + ", wue_zzakl30=" + wue_zzakl30 + ", wue_zzprda=" + wue_zzprda + ", klabc=" + klabc + ", wue_zzklabcvj=" + wue_zzklabcvj + ", wue_zzakl31=" + wue_zzakl31 + ", wue_zznetkk=" + wue_zznetkk + ", wue_ssf_vday=" + wue_ssf_vday + ", wue_ssf_vfreq=" + wue_ssf_vfreq + ", wue_ssf_vfunit=" + wue_ssf_vfunit + ", wue_ssf_lvisit=" + wue_ssf_lvisit + ", wue_ssf_ccust=" + wue_ssf_ccust + ", wue_ssf_scust=" + wue_ssf_scust + ", wue_ssf_vcust=" + wue_ssf_vcust + ", wue_zzrzsk=" + wue_zzrzsk + ", pltyp=" + pltyp + ", vwerk=" + vwerk + ", wue_ex_code=" + wue_ex_code + ", waers=" + waers + ", wue_zzartf=" + wue_zzartf + ", wue_zzakl20=" + wue_zzakl20 + ", eikto=" + eikto + ", perrl=" + perrl + ", wue_zzakl49=" + wue_zzakl49 + ", wue_zzakl16=" + wue_zzakl16 + ", wue_ssf_nvisit=" + wue_ssf_nvisit + ", wue_zzakl48=" + wue_zzakl48 + ", kurst=" + kurst + ", zzeakz=" + zzeakz + '}';
     }
+
+    protected boolean mandatoryFieldsAvailable(boolean recordIsValid) {
+        if (fieldHasContent(
+                kunnr, "kunnr")
+                && fieldHasContent(brsch, "brsch")
+                && fieldHasContent(ktokd, "ktokd")
+                && fieldHasContent(wue_zzktost, "wue_zzktost")
+                && fieldHasContent(land1, "land1")
+                && fieldHasContent(name1, "name1")
+                && fieldHasContent(ort1, "ort1")
+                && fieldHasContent(pstlz, "pstlz")
+                && fieldHasContent(spras, "spras")
+                && fieldHasContent(wue_zzvknum, "wue_zzvknum")
+                && fieldHasContent(stcd1, "stcd1")
+                && fieldHasContent(stcd2, "stcd2")
+                && fieldHasContent(region, "region")
+                && fieldHasContent(jmzah, "jmzah")
+                && fieldHasContent(knb1_zterm, "knb1_zterm")
+                && fieldHasContent(zinrt, "zinrt")
+                && fieldHasContent(vzskz, "vzskz")
+                && fieldHasContent(zuawa, "zuawa")
+                && fieldHasContent(xausz, "xausz")
+                && fieldHasContent(kkber, "kkber")
+                && fieldHasContent(klimk, "klimk")
+                && fieldHasContent(spart, "spart")
+                && fieldHasContent(zterm, "zterm")
+                && fieldHasContent(pltyp, "pltyp")
+                && fieldHasContent(waers, "waers")) {
+            recordIsValid = true;
+        }
+        return recordIsValid;
+    }
 }

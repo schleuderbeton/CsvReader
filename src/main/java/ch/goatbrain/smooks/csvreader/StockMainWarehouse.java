@@ -175,4 +175,21 @@ public class StockMainWarehouse extends AbstractCsvDataClass {
     public String toString() {
         return "StockMainWarehouse{" + "materialNumber=" + materialNumber + ", valuationType=" + valuationType + ", storageUnitType=" + storageUnitType + ", stock=" + stock + ", warehouse=" + warehouse + ", storageLocation=" + storageLocation + ", sapWarehouseNr=" + sapWarehouseNr + ", storageType=" + storageType + ", storageSection=" + storageSection + ", storageBin=" + storageBin + ", lastGoodsEntry=" + lastGoodsEntry + ", vfdat=" + vfdat + ", batchNumber=" + batchNumber + ", stockQualifier=" + stockQualifier + ", specialStockSign=" + specialStockSign + ", supplierNumber=" + supplierNumber + '}';
     }
+
+    protected boolean mandatoryFieldsAvailable(boolean recordIsValid) {
+        if (fieldHasContent(materialNumber, "materialNumber")
+                && fieldHasContent(valuationType, "valuationType")
+                && fieldHasContent(stock, "stock")
+                && fieldHasContent(warehouse, "warehouse")
+                && fieldHasContent(storageLocation, "storageLocation")
+                && fieldHasContent(sapWarehouseNr, "sapWarehouseNr")
+                && fieldHasContent(storageType, "storageType")
+                && fieldHasContent(storageSection, "storageSection")
+                && fieldHasContent(storageBin, "storageBin")
+                && fieldHasContent(lastGoodsEntry, "lastGoodsEntry")
+                && fieldHasContent(batchNumber, "batchNumber")) {
+            recordIsValid = true;
+        }
+        return recordIsValid;
+    }
 }
