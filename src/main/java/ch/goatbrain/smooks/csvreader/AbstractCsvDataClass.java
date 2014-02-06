@@ -48,9 +48,12 @@ public abstract class AbstractCsvDataClass {
 
     protected abstract boolean mandatoryFieldsAvailable(boolean recordIsValid);
 
+    protected abstract boolean fieldContentIsValid(boolean recordIsValid);
+
     public boolean isValid() {
         boolean recordIsValid = false;
         recordIsValid = mandatoryFieldsAvailable(recordIsValid);
+        //recordIsValid = fieldContentIsValid(recordIsValid);
         return recordIsValid;
     }
 
@@ -63,7 +66,7 @@ public abstract class AbstractCsvDataClass {
         if (fieldContent != null && fieldContent.length() > 0) {
             fieldHasContent = true;
         } else {
-            LOG.log(Level.OFF, "Mandatory Field " + fieldName + " has NO content!");
+            LOG.log(Level.OFF, "!!!!!!!!!!!!eRRoR!!!!!!!!!!!!!!!!!: Mandatory Field " + fieldName + " has NO content!");
         }
         return fieldHasContent;
     }

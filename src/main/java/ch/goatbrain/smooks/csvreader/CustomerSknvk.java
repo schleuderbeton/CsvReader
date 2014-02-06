@@ -232,4 +232,10 @@ public class CustomerSknvk extends AbstractCsvDataClass {
         }
         return recordIsValid;
     }
+
+    @Override
+    protected boolean fieldContentIsValid(boolean recordIsValid) {
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return true;
+    }
 }

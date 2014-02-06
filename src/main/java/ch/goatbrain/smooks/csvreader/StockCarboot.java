@@ -23,7 +23,7 @@ public class StockCarboot extends AbstractCsvDataClass {
     }
     private String materialnumber;
     private String warehouse;
-    private String stock;
+    private Integer stock;
     private String saleRepNr;
     private String fach;
 
@@ -43,11 +43,11 @@ public class StockCarboot extends AbstractCsvDataClass {
         this.warehouse = warehouse;
     }
 
-    public String getStock() {
+    public Integer getStock() {
         return stock;
     }
 
-    public void setStock(String stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 
@@ -80,10 +80,16 @@ public class StockCarboot extends AbstractCsvDataClass {
         if (fieldHasContent(
                 materialnumber, "materialNumber")
                 && fieldHasContent(warehouse, "warehouse")
-                && fieldHasContent(stock, "stock")
+                && fieldHasContent(stock.toString(), "stock")
                 && fieldHasContent(saleRepNr, "saleRepNr")) {
             recordIsValid = true;
         }
         return recordIsValid;
+    }
+
+    @Override
+    protected boolean fieldContentIsValid(boolean recordIsValid) {
+
+        return true;
     }
 }
