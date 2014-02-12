@@ -38,7 +38,10 @@ public class App {
         //validateGld("3157_GLD_20140204.csv", "gldList");
         //validateConsumption("3157_CONSUMPTION_20140204.csv", "consumtionList");
         //validateCustomerGeneral("3157_General_20140121.csv", "customerGeneralList");
-        validateCustomerSknvk("3157_SKNVK_20140121.csv", "customerSknvksList");
+//        validateCustomerSknvk("3157_SKNVK_20140121.csv", "customerSknvksList");
+        //validateStorageBinsAU("w-au_storageBins_20130822.csv", "storageBinList");
+        //validatePlantAU("w-au_plant_20130822.csv", "plantList");
+        validateStockMainWarehouseAU("w-au_mainWarehouse_20130822.csv", "mainWarehouseList");
 
     }
 
@@ -215,6 +218,60 @@ public class App {
         }
     }
 
+    private static List<StorageBinsAU> runSmooksTransformStorageBinsAU(StorageBinsAU dataClass, String beanId, String messageIn) throws IOException, SAXException, SmooksException {
+        Smooks smooks = new Smooks();
+        try {
+            CSVRecordParserConfigurator csvrpc = new CSVRecordParserConfigurator(dataClass.getCsvFields());
+            csvrpc.setSeparatorChar(dataClass.getSeparatorChar());
+            Binding binding = new Binding(beanId, dataClass.getClass(), BindingType.LIST);
+            smooks.setReaderConfig(csvrpc.setBinding(binding));
+            // Configure the execution context to generate a report...
+            ExecutionContext executionContext = smooks.createExecutionContext();
+            //executionContext.setEventListener(new HtmlReportGenerator("target/report/report.html"));
+            JavaResult javaResult = new JavaResult();
+            smooks.filterSource(executionContext, new StringSource(messageIn), javaResult);
+            return (List<StorageBinsAU>) javaResult.getBean(beanId);
+        } finally {
+            smooks.close();
+        }
+    }
+
+    private static List<PlantAU> runSmooksTransformPlantsAU(PlantAU dataClass, String beanId, String messageIn) throws IOException, SAXException, SmooksException {
+        Smooks smooks = new Smooks();
+        try {
+            CSVRecordParserConfigurator csvrpc = new CSVRecordParserConfigurator(dataClass.getCsvFields());
+            csvrpc.setSeparatorChar(dataClass.getSeparatorChar());
+            Binding binding = new Binding(beanId, dataClass.getClass(), BindingType.LIST);
+            smooks.setReaderConfig(csvrpc.setBinding(binding));
+            // Configure the execution context to generate a report...
+            ExecutionContext executionContext = smooks.createExecutionContext();
+            //executionContext.setEventListener(new HtmlReportGenerator("target/report/report.html"));
+            JavaResult javaResult = new JavaResult();
+            smooks.filterSource(executionContext, new StringSource(messageIn), javaResult);
+            return (List<PlantAU>) javaResult.getBean(beanId);
+        } finally {
+            smooks.close();
+        }
+    }
+
+    private static List<StockMainWarehouseAU> runSmooksTransformStockMainWarehouseAU(StockMainWarehouseAU dataClass, String beanId, String messageIn) throws IOException, SAXException, SmooksException {
+        Smooks smooks = new Smooks();
+        try {
+            CSVRecordParserConfigurator csvrpc = new CSVRecordParserConfigurator(dataClass.getCsvFields());
+            csvrpc.setSeparatorChar(dataClass.getSeparatorChar());
+            Binding binding = new Binding(beanId, dataClass.getClass(), BindingType.LIST);
+            smooks.setReaderConfig(csvrpc.setBinding(binding));
+            // Configure the execution context to generate a report...
+            ExecutionContext executionContext = smooks.createExecutionContext();
+            //executionContext.setEventListener(new HtmlReportGenerator("target/report/report.html"));
+            JavaResult javaResult = new JavaResult();
+            smooks.filterSource(executionContext, new StringSource(messageIn), javaResult);
+            return (List<StockMainWarehouseAU>) javaResult.getBean(beanId);
+        } finally {
+            smooks.close();
+        }
+    }
+
     private static String readFileIntoString(String file) {
         try {
             return StreamUtils.readStreamAsString(new FileInputStream(file));
@@ -259,8 +316,84 @@ public class App {
         }
     }
 
+    private static void validateStorageBinsAU(String file, String beanID) throws SmooksException, IOException, SAXException {
+        try {
+            StorageBinsAU data2check = new StorageBinsAU();
+            if (csvStructureValid(file, StorageBinsAU.class.getSimpleName(), data2check.getNofFields())) {
+
+                List<StorageBinsAU> records = runSmooksTransformStorageBinsAU(data2check, beanID, readFileIntoString(file));
+                if (records.size() > 0) {
+                    int totalRecords = records.size(), invalidRecords = 0;
+                    for (StorageBinsAU c : records) {
+                        if (c.isValid()) {
+                            LOG.log(Level.INFO, c.getClass().getSimpleName() + " valid: " + c.toCsvString());
+                        } else {
+                            LOG.log(Level.INFO, c.getClass().getSimpleName() + " INVALID: " + c.toCsvString());
+                            invalidRecords++;
+                        }
+                    }
+                    LOG.log(Level.INFO, data2check.getClass().getSimpleName() + ": " + String.valueOf(totalRecords - invalidRecords) + " of "
+                            + String.valueOf(totalRecords) + " records valid [" + percentage(totalRecords, invalidRecords) + "]");
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void validatePlantAU(String file, String beanID) throws SmooksException, IOException, SAXException {
+        try {
+            PlantAU data2check = new PlantAU();
+            if (csvStructureValid(file, PlantAU.class.getSimpleName(), data2check.getNofFields())) {
+
+                List<PlantAU> records = runSmooksTransformPlantsAU(data2check, beanID, readFileIntoString(file));
+                if (records.size() > 0) {
+                    int totalRecords = records.size(), invalidRecords = 0;
+                    for (PlantAU c : records) {
+                        if (c.isValid()) {
+                            LOG.log(Level.INFO, c.getClass().getSimpleName() + " valid: " + c.toCsvString());
+                        } else {
+                            LOG.log(Level.INFO, c.getClass().getSimpleName() + " INVALID: " + c.toCsvString());
+                            invalidRecords++;
+                        }
+                    }
+                    LOG.log(Level.INFO, data2check.getClass().getSimpleName() + ": " + String.valueOf(totalRecords - invalidRecords) + " of "
+                            + String.valueOf(totalRecords) + " records valid [" + percentage(totalRecords, invalidRecords) + "]");
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void validateStockMainWarehouseAU(String file, String beanID) throws SmooksException, IOException, SAXException {
+        try {
+            StockMainWarehouseAU data2check = new StockMainWarehouseAU();
+            if (csvStructureValid(file, StockMainWarehouseAU.class.getSimpleName(), data2check.getNofFields())) {
+
+                List<StockMainWarehouseAU> records = runSmooksTransformStockMainWarehouseAU(data2check, beanID, readFileIntoString(file));
+                if (records.size() > 0) {
+                    int totalRecords = records.size(), invalidRecords = 0;
+                    for (StockMainWarehouseAU c : records) {
+                        if (c.isValid()) {
+                            LOG.log(Level.INFO, c.getClass().getSimpleName() + " valid: " + c.toCsvString());
+                        } else {
+                            LOG.log(Level.INFO, c.getClass().getSimpleName() + " INVALID: " + c.toCsvString());
+                            invalidRecords++;
+                        }
+                    }
+                    LOG.log(Level.INFO, data2check.getClass().getSimpleName() + ": " + String.valueOf(totalRecords - invalidRecords) + " of "
+                            + String.valueOf(totalRecords) + " records valid [" + percentage(totalRecords, invalidRecords) + "]");
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private static String percentage(int total, int invalid) {
-        int percentage = (total - invalid) / total * 100;
+        int valid = total - invalid;
+        int percentage = valid * 100 / total;
         return String.valueOf(percentage).concat(" %");
     }
 
